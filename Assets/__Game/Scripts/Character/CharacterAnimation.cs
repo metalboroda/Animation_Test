@@ -7,7 +7,7 @@ namespace Animation_Test
   public class CharacterAnimation : MonoBehaviour
   {
     [SerializeField] private float crossDur = 0.25f;
-    [SerializeField] private float dampTime = 0.15f;
+    //[SerializeField] private float dampTime = 0.15f;
     [SerializeField] private float returnDelaySubtr = 0.3f;
 
     private Coroutine _animRoutine;
