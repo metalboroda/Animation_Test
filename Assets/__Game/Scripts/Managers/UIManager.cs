@@ -11,6 +11,9 @@ namespace Animation_Test
     [Header("")]
     [SerializeField] private Button iKEnableBtn;
 
+    [Header("Game Screen")]
+    [SerializeField] private Button resetBtn;
+
     private void Start()
     {
       SetupButtons();
@@ -30,6 +33,8 @@ namespace Animation_Test
       }
 
       iKEnableBtn.onClick.AddListener(() => { EventManager.RaiseIKBtnClicked(); });
+
+      resetBtn.onClick.AddListener(() => { EventManager.RaiseResetBtnClicked(); });
     }
   }
 }

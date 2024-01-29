@@ -12,6 +12,9 @@ namespace Animation_Test
 
     public static event UnityAction OnIKBtnClicked;
     public static void RaiseIKBtnClicked() => OnIKBtnClicked?.Invoke();
+
+    public static event UnityAction OnResetBtnClicked;
+    public static void RaiseResetBtnClicked() => OnResetBtnClicked?.Invoke();
     #endregion
   }
 }
