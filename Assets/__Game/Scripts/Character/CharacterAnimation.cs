@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using Zenject;
 
@@ -6,9 +6,13 @@ namespace Animation_Test
 {
   public class CharacterAnimation : MonoBehaviour
   {
+    [Header("Animation Settings")]
     [SerializeField] private float crossDur = 0.25f;
-    //[SerializeField] private float dampTime = 0.15f;
     [SerializeField] private float returnDelaySubtr = 0.3f;
+    [SerializeField] private string returnAnimName = "Idle";
+
+    [Header("Layer Settings")]
+    [SerializeField] private float layerDur = 0.15f;
 
     private Coroutine _animRoutine;
 
@@ -17,50 +21,103 @@ namespace Animation_Test
     [Inject] private readonly UIManager _uIManager;
 
     private bool _canPlayAnimation = true;
+    private bool _canPlayLayerAnimation = true;
 
-    private void Awake()
-    {
-      _animator = GetComponent<Animator>();
-    }
+    private void Awake() => _animator = GetComponent<Animator>();
 
-    private void OnEnable()
-    {
-      _uIManager.AnimBtnCLicked += PlayAnimWithIdleEnd;
-    }
+    private void OnEnable() => _uIManager.AnimBtnCLicked += PlayAnimWithIdleEnd;
 
-    private void OnDisable()
-    {
-      _uIManager.AnimBtnCLicked -= PlayAnimWithIdleEnd;
-    }
+    private void OnDisable() => _uIManager.AnimBtnCLicked -= PlayAnimWithIdleEnd;
 
-    private void PlayAnimWithIdleEnd(string animName)
+    private void PlayAnimWithIdleEnd(string animName, string layerName)
     {
-      _animRoutine = StartCoroutine(DoPlayAnimWithIdleEnd(animName));
+      if (string.IsNullOrEmpty(layerName))
+        _animRoutine = StartCoroutine(DoPlayAnimWithIdleEnd(animName));
+      else
+        StartCoroutine(DoPlayerLayerAnimWithBaseEnd(layerName));
     }
 
     private IEnumerator DoPlayAnimWithIdleEnd(string animName)
     {
-      if (_canPlayAnimation == false ||
-        _animator.GetCurrentAnimatorStateInfo(0).IsName(animName)) yield break;
+      if (!CanPlayAnimation(animName)) yield break;
 
-      if (_animRoutine != null)
+      CrossFadeAnimation(animName);
+
+      yield return new WaitForSeconds(GetAnimationLength() - returnDelaySubtr);
+
+      CrossFadeAnimation(returnAnimName);
+    }
+
+    private IEnumerator DoPlayerLayerAnimWithBaseEnd(string layerName)
+    {
+      if (!_canPlayLayerAnimation) yield break;
+
+      SetLayerWeightSmoothly(layerName, 1f, true);
+
+      yield return new WaitForSeconds(GetAnimationLength(layerName) - returnDelaySubtr);
+
+      SetLayerWeightSmoothly(layerName, 0f, false);
+
+      yield return new WaitForSeconds(layerDur);
+
+      _canPlayLayerAnimation = true;
+    }
+
+    private IEnumerator DoSmoothlySetLayerWeight(string layerName, float targetWeight,
+      float duration, bool playAnimationAgain)
+    {
+      _canPlayLayerAnimation = false;
+
+      int layerIndex = _animator.GetLayerIndex(layerName);
+      float startTime = Time.time;
+      float startWeight = _animator.GetLayerWeight(layerIndex);
+
+      if (playAnimationAgain) _animator.Play(
+        _animator.GetCurrentAnimatorStateInfo(layerIndex).fullPathHash, layerIndex, 0f);
+
+      while (Time.time < startTime + duration)
       {
-        StopCoroutine(_animRoutine);
+        float t = Mathf.Clamp01((Time.time - startTime) / duration);
+
+        _animator.SetLayerWeight(layerIndex, Mathf.Lerp(startWeight, targetWeight, t));
+
+        yield return null;
       }
+
+      _animator.SetLayerWeight(layerIndex, targetWeight);
+    }
+
+    private bool CanPlayAnimation(string animName) => _canPlayAnimation &&
+      !_animator.GetCurrentAnimatorStateInfo(0).IsName(animName);
+
+    private void CrossFadeAnimation(string animName)
+    {
+      if (_animRoutine != null) StopCoroutine(_animRoutine);
 
       _animator.CrossFadeInFixedTime(animName, crossDur);
       _canPlayAnimation = false;
 
-      yield return new WaitForSeconds(crossDur);
+      StartCoroutine(EnableAnimationAfterDelay(crossDur));
+    }
+
+    private IEnumerator EnableAnimationAfterDelay(float delay)
+    {
+      yield return new WaitForSeconds(delay);
 
       _canPlayAnimation = true;
-
-      AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-      float animationLength = stateInfo.length;
-
-      yield return new WaitForSeconds(animationLength - returnDelaySubtr);
-
-      _animator.CrossFadeInFixedTime("Idle", crossDur);
     }
+
+    private float GetAnimationLength() => _animator.GetCurrentAnimatorStateInfo(0).length;
+
+    private float GetAnimationLength(string layerName)
+    {
+      int layerIndex = _animator.GetLayerIndex(layerName);
+
+      return _animator.GetCurrentAnimatorStateInfo(layerIndex).length;
+    }
+
+    private void SetLayerWeightSmoothly(string layerName,
+      float targetWeight, bool playAnimationAgain) => StartCoroutine(
+        DoSmoothlySetLayerWeight(layerName, targetWeight, layerDur, playAnimationAgain));
   }
 }

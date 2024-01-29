@@ -9,6 +9,7 @@ namespace Animation_Test
 
     [field: Header("")]
     [field: SerializeField] public string AnimName { get; private set; }
+    [field: SerializeField] public string LayerName { get; private set; }
 
     private TextMeshProUGUI _btnTextMeshPro;
 

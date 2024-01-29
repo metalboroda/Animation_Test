@@ -7,7 +7,7 @@ namespace Animation_Test
 {
   public class UIManager : MonoBehaviour
   {
-    public event Action<string> AnimBtnCLicked;
+    public event Action<string, string> AnimBtnCLicked;
 
     [Header("")]
     [SerializeField] private List<Button> buttons = new();
@@ -23,7 +23,8 @@ namespace Animation_Test
       {
         var btnAnimHandler = button.GetComponent<AnimBtnHandler>();
 
-        button.onClick.AddListener(() => AnimBtnCLicked?.Invoke(btnAnimHandler.AnimName));
+        button.onClick.AddListener(
+          () => AnimBtnCLicked?.Invoke(btnAnimHandler.AnimName, btnAnimHandler.LayerName));
       }
     }
   }

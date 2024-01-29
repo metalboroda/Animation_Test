@@ -589,6 +589,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <BtnText>k__BackingField: HEAD
   <AnimName>k__BackingField: Head
+  <LayerName>k__BackingField: HeadLayer
 --- !u!1 &149961274
 GameObject:
   m_ObjectHideFlags: 0
@@ -1735,6 +1736,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <BtnText>k__BackingField: RIGHT LEG
   <AnimName>k__BackingField: RightLeg
+  <LayerName>k__BackingField: RightLegLayer
 --- !u!1001 &609989621
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1933,6 +1935,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <BtnText>k__BackingField: DANCE 2
   <AnimName>k__BackingField: Dance_2
+  <LayerName>k__BackingField: 
 --- !u!1001 &682290821
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3284,6 +3287,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <BtnText>k__BackingField: DANCE 1
   <AnimName>k__BackingField: Dance_1
+  <LayerName>k__BackingField: 
 --- !u!1001 &1010022723
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3856,7 +3860,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: RIGHT ARM
+  m_text: LEFT LEG
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3883,7 +3887,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24.65
+  m_fontSize: 28.85
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -4169,8 +4173,8 @@ MonoBehaviour:
   - {fileID: 1004678028}
   - {fileID: 666705313}
   - {fileID: 1565183709}
-  - {fileID: 2130112682}
   - {fileID: 1576331731}
+  - {fileID: 2130112682}
   - {fileID: 582227843}
 --- !u!1 &1499436725
 GameObject:
@@ -4397,7 +4401,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: LEFT LEG
+  m_text: RIGHT ARM
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4424,7 +4428,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28.85
+  m_fontSize: 24.65
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -4610,6 +4614,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <BtnText>k__BackingField: LEFT ARM
   <AnimName>k__BackingField: LeftArm
+  <LayerName>k__BackingField: LeftArmLayer
 --- !u!1 &1576331729
 GameObject:
   m_ObjectHideFlags: 0
@@ -4624,7 +4629,7 @@ GameObject:
   - component: {fileID: 1576331731}
   - component: {fileID: 1576331734}
   m_Layer: 0
-  m_Name: LeftLegAnimBtn
+  m_Name: RightArmAnimBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4744,8 +4749,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57056fd0f686f95479ea14f8ff8fa736, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <BtnText>k__BackingField: LEFT LEG
-  <AnimName>k__BackingField: LeftLeg
+  <BtnText>k__BackingField: RIGHT ARM
+  <AnimName>k__BackingField: RightArm
+  <LayerName>k__BackingField: RightArmLayer
 --- !u!1001 &1605099578
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5557,8 +5563,8 @@ RectTransform:
   - {fileID: 1004678025}
   - {fileID: 666705312}
   - {fileID: 1565183708}
-  - {fileID: 2130112681}
   - {fileID: 1576331730}
+  - {fileID: 2130112681}
   - {fileID: 582227842}
   m_Father: {fileID: 1864370721}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5791,7 +5797,7 @@ GameObject:
   - component: {fileID: 2130112682}
   - component: {fileID: 2130112685}
   m_Layer: 0
-  m_Name: RightArmAnimBtn
+  m_Name: LeftLegAnimBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5911,8 +5917,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57056fd0f686f95479ea14f8ff8fa736, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <BtnText>k__BackingField: RIGHT ARM
-  <AnimName>k__BackingField: RightArm
+  <BtnText>k__BackingField: LEFT LEG
+  <AnimName>k__BackingField: LeftLeg
+  <LayerName>k__BackingField: LeftLegLayer
 --- !u!1 &2143285829
 GameObject:
   m_ObjectHideFlags: 0
@@ -7989,6 +7996,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   crossDur: 0.25
   returnDelaySubtr: 0.3
+  returnAnimName: Idle
+  layerDur: 0.15
 --- !u!4 &5799114291512121711
 Transform:
   m_ObjectHideFlags: 0
@@ -9269,6 +9278,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <BtnText>k__BackingField: IDLE
   <AnimName>k__BackingField: Idle
+  <LayerName>k__BackingField: 
 --- !u!1 &8590980626196794493
 GameObject:
   m_ObjectHideFlags: 0
