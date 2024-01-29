@@ -4,15 +4,20 @@ using UnityEngine.EventSystems;
 
 namespace Animation_Test
 {
-  public class IKTarget : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
+  public class IKTarget : MonoBehaviour, IPointerDownHandler, IDragHandler,
+    IPointerUpHandler
   {
     private bool _isDragging;
 
+    private Rigidbody _rigidbody;
     private CapsuleCollider _capsuleCollider;
     private MeshRenderer _meshRenderer;
 
+    private CharacterIKHandler _characterIKHandler;
+
     private void Awake()
     {
+      _rigidbody = GetComponent<Rigidbody>();
       _capsuleCollider = GetComponent<CapsuleCollider>();
       _meshRenderer = GetComponentInChildren<MeshRenderer>();
     }
@@ -25,11 +30,21 @@ namespace Animation_Test
     private void OnDisable()
     {
       EventManager.OnIKBtnClicked -= EnableIKTarget;
+
+      if (_characterIKHandler != null)
+        _characterIKHandler.LimitsPushed -= MakePhysical;
+    }
+
+    public void Init(CharacterIKHandler characterIKHandler)
+    {
+      _characterIKHandler = characterIKHandler;
+      _characterIKHandler.LimitsPushed += MakePhysical;
     }
 
     private void EnableIKTarget()
     {
       _capsuleCollider.enabled = true;
+
       EnableModel();
     }
 
@@ -62,6 +77,15 @@ namespace Animation_Test
     public void OnPointerUp(PointerEventData eventData)
     {
       _isDragging = false;
+    }
+
+    private void MakePhysical()
+    {
+      transform.SetParent(null);
+      _rigidbody.isKinematic = false;
+      _rigidbody.velocity = Vector3.zero;
+      _capsuleCollider.isTrigger = false;
+      enabled = false;
     }
   }
 }

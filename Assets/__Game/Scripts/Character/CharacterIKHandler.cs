@@ -1,4 +1,5 @@
 using RootMotion.FinalIK;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -6,10 +7,12 @@ namespace Animation_Test
 {
   public class CharacterIKHandler : MonoBehaviour
   {
+    public Action LimitsPushed;
+
     [SerializeField] private FullBodyBipedIK iK;
 
     [Header("")]
-    [SerializeField] private Transform target;
+    [SerializeField] private IKTarget target;
     [SerializeField] private float weightDur = 0.15f;
     [SerializeField] private float stretchingLimit = 0.75f;
 
@@ -22,8 +25,9 @@ namespace Animation_Test
 
     private void Start()
     {
-      _initTargetLocalPos = target.localPosition;
-      iK.solver.leftHandEffector.target = target;
+      target.Init(this);
+      _initTargetLocalPos = target.transform.localPosition;
+      iK.solver.leftHandEffector.target = target.transform;
       iK.enabled = false;
     }
 
@@ -39,10 +43,16 @@ namespace Animation_Test
 
     private void CheckTargetDistance()
     {
-      float distance = Vector3.Distance(target.localPosition, _initTargetLocalPos);
+      if (target == null) return;
+
+      float distance = Vector3.Distance(target.transform.localPosition, _initTargetLocalPos);
 
       if (distance > stretchingLimit)
       {
+        iK.solver.leftHandEffector.target = null;
+        iK.enabled = false;
+
+        LimitsPushed?.Invoke();
       }
     }
 
