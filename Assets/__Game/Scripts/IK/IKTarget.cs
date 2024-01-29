@@ -22,11 +22,6 @@ namespace Animation_Test
       EventManager.OnIKBtnClicked += EnableIKTarget;
     }
 
-    private void Start()
-    {
-      _capsuleCollider.enabled = false;
-    }
-
     private void OnDisable()
     {
       EventManager.OnIKBtnClicked -= EnableIKTarget;

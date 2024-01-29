@@ -1,14 +1,16 @@
 using RootMotion.FinalIK;
+using System.Collections;
 using UnityEngine;
 
 namespace Animation_Test
 {
   public class CharacterIKHandler : MonoBehaviour
   {
-    [SerializeField] private LimbIK leftHandIK;
+    [SerializeField] private FullBodyBipedIK iK;
 
     [Header("")]
     [SerializeField] private Transform target;
+    [SerializeField] private float weightDur = 0.15f;
     [SerializeField] private float stretchingLimit = 0.75f;
 
     private Vector3 _initTargetLocalPos;
@@ -21,8 +23,8 @@ namespace Animation_Test
     private void Start()
     {
       _initTargetLocalPos = target.localPosition;
-      leftHandIK.solver.target = target;
-      leftHandIK.enabled = false;
+      iK.solver.leftHandEffector.target = target;
+      iK.enabled = false;
     }
 
     private void Update()
@@ -46,7 +48,27 @@ namespace Animation_Test
 
     private void EnableIK()
     {
-      leftHandIK.enabled = true;
+      iK.enabled = true;
+
+      StartCoroutine(DoLerpIKPositionWeight(0f, 1f, weightDur, iK.solver.leftHandEffector));
+    }
+
+    private IEnumerator DoLerpIKPositionWeight(float startWeight, float endWeight,
+      float duration, IKEffector limb)
+    {
+      float elapsedTime = 0f;
+
+      while (elapsedTime < duration)
+      {
+        float t = elapsedTime / duration;
+
+        limb.positionWeight = Mathf.Lerp(startWeight, endWeight, t);
+        elapsedTime += Time.deltaTime;
+
+        yield return null;
+      }
+
+      iK.solver.IKPositionWeight = endWeight;
     }
   }
 }
