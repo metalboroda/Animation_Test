@@ -26,6 +26,9 @@ namespace Animation_Test
     private void SetupBtnTxt()
     {
       _btnTextMeshPro.text = BtnText;
+
+      if (!string.IsNullOrEmpty(LayerName))
+        _btnTextMeshPro.text += " (LAYER)";
     }
   }
 }
