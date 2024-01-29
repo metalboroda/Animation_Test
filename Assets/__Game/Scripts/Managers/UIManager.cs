@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,10 +6,10 @@ namespace Animation_Test
 {
   public class UIManager : MonoBehaviour
   {
-    public event Action<string, string> AnimBtnCLicked;
+    [SerializeField] private List<Button> animButtons = new();
 
     [Header("")]
-    [SerializeField] private List<Button> buttons = new();
+    [SerializeField] private Button iKEnableBtn;
 
     private void Start()
     {
@@ -19,13 +18,18 @@ namespace Animation_Test
 
     private void SetupButtons()
     {
-      foreach (var button in buttons)
+      foreach (var button in animButtons)
       {
         var btnAnimHandler = button.GetComponent<AnimBtnHandler>();
 
-        button.onClick.AddListener(
-          () => AnimBtnCLicked?.Invoke(btnAnimHandler.AnimName, btnAnimHandler.LayerName));
+        button.onClick.AddListener(() =>
+          {
+            EventManager.RaiseAnimBtnCLicked(btnAnimHandler.AnimName,
+            btnAnimHandler.LayerName);
+          });
       }
+
+      iKEnableBtn.onClick.AddListener(() => { EventManager.RaiseIKBtnClicked(); });
     }
   }
 }

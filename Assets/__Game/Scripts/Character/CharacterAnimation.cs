@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine;
-using Zenject;
 
 namespace Animation_Test
 {
@@ -18,16 +17,14 @@ namespace Animation_Test
 
     private Animator _animator;
 
-    [Inject] private readonly UIManager _uIManager;
-
     private bool _canPlayAnimation = true;
     private bool _canPlayLayerAnimation = true;
 
     private void Awake() => _animator = GetComponent<Animator>();
 
-    private void OnEnable() => _uIManager.AnimBtnCLicked += PlayAnimWithIdleEnd;
+    private void OnEnable() => EventManager.OnAnimBtnCLicked += PlayAnimWithIdleEnd;
 
-    private void OnDisable() => _uIManager.AnimBtnCLicked -= PlayAnimWithIdleEnd;
+    private void OnDisable() => EventManager.OnAnimBtnCLicked -= PlayAnimWithIdleEnd;
 
     private void PlayAnimWithIdleEnd(string animName, string layerName)
     {
@@ -39,7 +36,7 @@ namespace Animation_Test
 
     private IEnumerator DoPlayAnimWithIdleEnd(string animName)
     {
-      if (!CanPlayAnimation(animName)) yield break;
+      if (CanPlayAnimation(animName) == false) yield break;
 
       CrossFadeAnimation(animName);
 
@@ -50,7 +47,7 @@ namespace Animation_Test
 
     private IEnumerator DoPlayerLayerAnimWithBaseEnd(string layerName)
     {
-      if (!_canPlayLayerAnimation) yield break;
+      if (_canPlayLayerAnimation == false) yield break;
 
       SetLayerWeightSmoothly(layerName, 1f, true);
 
@@ -88,7 +85,7 @@ namespace Animation_Test
     }
 
     private bool CanPlayAnimation(string animName) => _canPlayAnimation &&
-      !_animator.GetCurrentAnimatorStateInfo(0).IsName(animName);
+      _animator.GetCurrentAnimatorStateInfo(0).IsName(animName) == false;
 
     private void CrossFadeAnimation(string animName)
     {

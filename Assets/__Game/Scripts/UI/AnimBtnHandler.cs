@@ -27,7 +27,7 @@ namespace Animation_Test
     {
       _btnTextMeshPro.text = BtnText;
 
-      if (!string.IsNullOrEmpty(LayerName))
+      if (string.IsNullOrEmpty(LayerName) == false)
         _btnTextMeshPro.text += " (LAYER)";
     }
   }
